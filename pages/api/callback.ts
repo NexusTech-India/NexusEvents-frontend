@@ -40,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     // Values for the verifier
-    const sLoader = new loaders.UniversalSchemaLoader("cloudflare-ipfs.com");
+    const sLoader = new loaders.HttpSchemaLoader()
 
     // Initialize the verifier with the values described above.
     const verifier = new auth.Verifier(verificationKeyloader, sLoader, resolvers);
