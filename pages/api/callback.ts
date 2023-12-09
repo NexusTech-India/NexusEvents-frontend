@@ -14,15 +14,7 @@ export const config = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     let { sessionId } = req.query;
     sessionId = sessionId as string;
-
-    console.log(process.cwd()+"/keys", fs.readdirSync(path.join(process.cwd(), "keys")))
-    console.log(__dirname+"..", fs.readdirSync(path.join(__dirname, "..")))
-    console.log(process.cwd(), fs.readdirSync(process.cwd()))
-    console.log(__dirname, fs.readdirSync(__dirname))
-    console.log(__dirname+"../..", fs.readdirSync(path.join(__dirname, "..", "..")))
-    console.log(__dirname+"../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..")))
-    console.log(__dirname+"../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..")))
-
+    
     const session = await db.session.findUnique({ where: { id: parseInt(sessionId) } });
     if (!session) return res.status(404).send("Session not found");
 
@@ -46,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const verifier = await auth.Verifier.newVerifier(
         {
             stateResolver: resolvers,
-            circuitsDir: path.join(process.cwd(), "keys"),
+            circuitsDir: path.join(__dirname, "..", "..", "..", ".."),
             ipfsGatewayURL: "https://ipfs.io"
         }
     );
