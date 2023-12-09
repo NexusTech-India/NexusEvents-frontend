@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/server/db"
 import { auth, resolver } from "@iden3/js-iden3-auth";
 import path from "path"
+import fs from "fs"
 import getRawBody from "raw-body";
 
 export const config = {
@@ -12,9 +13,19 @@ export const config = {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     let { sessionId } = req.query;
-    sessionId = sessionId as string;//.next/server/pages/api/callback.js -> path.join(__dirname, "..", "keys")
-    console.log(path.join(process.cwd(),"keys"));
-    console.log(path.join(__dirname, "..", "..", "..", "keys"))
+    sessionId = sessionId as string;
+
+    console.log(process.cwd()+"/keys", fs.readdirSync(path.join(process.cwd(), "keys")))
+    console.log(__dirname+"..", fs.readdirSync(path.join(__dirname, "..")))
+    console.log(process.cwd(), fs.readdirSync(process.cwd()))
+    console.log(__dirname, fs.readdirSync(__dirname))
+    console.log(__dirname+"../..", fs.readdirSync(path.join(__dirname, "..", "..")))
+    console.log(__dirname+"../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..")))
+    console.log(__dirname+"../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..")))
+    console.log(__dirname+"../../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..", "..")))
+    console.log(__dirname+"../../../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..", "..", "..")))
+    console.log(__dirname+"../../../../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..", "..", "..", "..")))
+
     const session = await db.session.findUnique({ where: { id: parseInt(sessionId) } });
     if (!session) return res.status(404).send("Session not found");
 
