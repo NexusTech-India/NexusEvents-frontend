@@ -10,7 +10,7 @@ export default function Navbar() {
     </div>
     <div className="grow" />
     <div className="flex flex-row items-center justify-center gap-10">
-      <Link href="/host" className="text-2xl text-gray-400 hover:underline hover:text-white">Host Event</Link>
+      {address && <Link href="/host" className="text-2xl text-gray-400 hover:underline hover:text-white">Host Event</Link>}
       <Link href="/events" className="text-2xl text-gray-400 hover:underline hover:text-white">Events</Link>
       {address && <Link href="/my-events" className="text-2xl text-gray-400 hover:underline hover:text-white">My events</Link>}
     </div>
