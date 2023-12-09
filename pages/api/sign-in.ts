@@ -9,7 +9,7 @@ const Is18Plus = {
         "allowedIssuers": [
             "*"
         ],
-        "context": "ipfs://QmZJo92wz58RNq9kWS8vwXMxNiVs4TgwjVbHv87FYXS6oQ",
+        "context": "https://nexus-events.vercel.app/schema/NexusEventVerification.jsonld",
         "credentialSubject": {
             "birthdate": {
                 "$lt": "2005-03-16T13:51:51.841Z"
@@ -27,7 +27,7 @@ const hasCodingExperience = {
         "allowedIssuers": [
             "*"
         ],
-        "context": "ipfs://QmZJo92wz58RNq9kWS8vwXMxNiVs4TgwjVbHv87FYXS6oQ",
+        "context": "https://nexus-events.vercel.app/schema/NexusEventVerification.jsonld",
         "credentialSubject": {
             "coding_experience": {
                 "$eq": true
