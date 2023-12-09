@@ -3,7 +3,8 @@ import { db } from "@/server/db"
 import { auth } from "@iden3/js-iden3-auth";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const data = await db.session.create({ data: {} })
+    let count = await db.session.count();
+    const data = await db.session.create({ data: { id: count+1} })
     const { id } = data;
 
     const hostUrl = "https://nexus-events.vercel.app";
@@ -19,12 +20,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         uri,
     );
 
-    request.id = id;
-    request.thid = id;
+    request.id = id.toString();
+    request.thid = id.toString();
 
     // Add request for a specific proof
     const proofRequest = {
-        id: 1,
+        id,
         circuitId: 'credentialAtomicQuerySigV2',
         query: {
             allowedIssuers: [audience],

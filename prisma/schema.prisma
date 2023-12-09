@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Session {
-  id        String   @id @default(cuid()) @map("_id")
+  id        Int      @id @map("_id")
   request   Json     @default("{}")
   response  Json     @default("{}")
   createdAt DateTime @default(now())
