@@ -7,41 +7,41 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = data;
 
     const hostUrl = "https://nexus-events.vercel.app";
-    const callbackURL = "/api/callback"
-    const audience = "did:polygonid:polygon:mumbai:2qKMLW2WxXWmTMLiAEuWmBcbzdVYyTWAL6MtceJJvF"
+    const sessionId: number = 1;
+    const callbackURL: string = "/api/callback"
+    const audience: string = "did:polygonid:polygon:main:2q2LeHV3tttEJbLo6J9dLGsULyRh9WVTQ1C4MFTNsM"
 
-    const uri = `${hostUrl}${callbackURL}?sessionId=${id}`;
+    const uri: string = `${hostUrl}${callbackURL}?sessionId=${sessionId}`;
 
     // Generate request for basic authentication
-    const request = auth.createAuthorizationRequest(
+    const request: any = auth.createAuthorizationRequest(
         'test flow',
         audience,
         uri,
     );
 
-    request.id = id;
-    request.thid = id;
+    request.id = '7f38a193-0918-4a48-9fac-36adfdb8b542';
+    request.thid = '7f38a193-0918-4a48-9fac-36adfdb8b542';
 
     // Add request for a specific proof
-    const proofRequest = {
-        id: 1,
-        circuitId: 'credentialAtomicQuerySigV2',
-        query: {
-            allowedIssuers: [audience],
-            type: 'Verification',
-            context: 'ipfs://QmZJo92wz58RNq9kWS8vwXMxNiVs4TgwjVbHv87FYXS6oQ',
-            credentialSubject: {
-                birthday: {
-                    $lt: 20100101,
-                },
+    const proofRequest: any = {
+        "circuitId": "credentialAtomicQuerySigV2",
+        "id": 1701704032,
+        "query": {
+            "allowedIssuers": [
+                "*"
+            ],
+            "context": "ipfs://QmZB8CMAMZYwybgAr7RU9UgbxcNikNLydEr5srF5dTpdtx",
+            "credentialSubject": {
+                "coding_experience": {
+                    "$eq": true
+                }
             },
-        },
-    };
-    const scope = request.body.scope ?? [];
+            "type": "EventVerification"
+        }
+    }
+    const scope: any[] = request.body.scope ?? [];
     request.body.scope = [...scope, proofRequest];
 
-    data.request = request;
-    await db.session.update({ where: { id }, data: { request } });
-
-    return res.status(200).send(request);
+    return res.status(200).json(request);
 }
