@@ -49,7 +49,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // Kick off verification process.
         const authResponse = await verifier.fullVerify(
             tokenStr,
-            JSON.parse(session.request! as any),
+            (session.request! as any),
             {
                 acceptedStateTransitionDelay: 5 * 60 * 1000, // up to a 5 minute delay accepted by the Verifier
             }
