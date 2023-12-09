@@ -30,7 +30,7 @@ import toast from "react-hot-toast";
 const steps = [
     { title: 'First', description: 'Event Information' },
     { title: 'Second', description: 'Tickets Minting' },
-    { title: 'Third', description: 'Select Rooms' },
+    { title: 'Third', description: 'Requirements' },
 ]
 
 export interface EventData {
@@ -86,6 +86,21 @@ export default function Host() {
                 toast.error("Please fill all the fields")
             }
         }
+    }
+
+    const createEvent = async () => {
+        const log = (message: string) => {
+            setLogs((logs) => [...logs, message])
+        }
+
+        if (eventData && ticketData && qualificationsData) {
+            if(!address) return toast.error("Please connect your wallet")
+            const { name, logo, description, startDate, endDate } = eventData
+            const { quantity, price } = ticketData
+            const { age, country, coding } = qualificationsData
+
+
+        } else toast.error("Please fill all the fields")
     }
 
     return (
@@ -177,9 +192,31 @@ export default function Host() {
                             )
                         }
 
+                        {
+                            activeStep == 3 && (
+                                <div className="flex flex-col items-center justify-center bg-[#15162c] rounded-lg p-5 text-white">
+                                    <h1 className="text-3xl font-bold">Create Event</h1>
+                                    <p className="text-xl mt-5 text-center italic">
+                                        Just click the button below to start creating the event and mint the tickets and list them for sale in the marketplace
+                                        <br />
+                                        <br />
+                                        <b>NOTE:</b> You will be charged a small fee for minting the tickets and listing them for sale in the marketplace. Do not exit the page until all the transactions is confirmed.
+                                    </p>
+                                    <Button colorScheme="orange" variant="solid" className="mt-5">Create Event</Button>
+
+                                    <h1 className="text-3xl font-bold mt-10">Logs</h1>
+                                    <div className="flex flex-col items-left justify-left mt-5">
+                                        {logs.map((log) => (
+                                            <p className="text-xl mt-5 text-center italic">{log}</p>
+                                        ))}
+                                    </div>
+                                </div>
+                            )
+                        }
+
                         <div className="flex flex-row items-center justify-center gap-10">
-                            <Button colorScheme="purple" variant="solid" className="mt-5" onClick={() => goToPrevious()}>Previous</Button>
-                            <Button colorScheme="purple" variant="solid" className="mt-5" onClick={() => onClickNext()}>Next</Button>
+                            <Button colorScheme="purple" variant="solid" className="mt-5" onClick={() => goToPrevious()} isDisabled={activeStep == 0}>Previous</Button>
+                            <Button colorScheme="purple" variant="solid" className="mt-5" onClick={() => onClickNext()} isDisabled={activeStep == 3}>Next</Button>
                         </div>
                     </div>
                 </div>
