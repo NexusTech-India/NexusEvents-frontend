@@ -20,7 +20,7 @@ export default function Home() {
             </Head>
             <main className="flex h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] overflow-hidden">
                 <Navbar />
-                <div className="flex flex-row grow justify-items items-center p-10 w-64 h-64">
+                <div className="flex flex-row grow justify-items items-center p-10 w-96 h-96">
                     <QRCode value={qr} className="p-10 bg-white rounded-lg"/>
                 </div>
             </main>
