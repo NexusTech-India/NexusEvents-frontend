@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/server/db"
-import { auth, resolver } from "@iden3/js-iden3-auth";
+import { auth, resolver, loaders } from "@iden3/js-iden3-auth";
 import path from "path"
 import fs from "fs"
 import getRawBody from "raw-body";
@@ -34,25 +34,34 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ['polygon:mumbai']: ethStateResolver,
     };
 
-    // EXECUTE VERIFICATION
-    const verifier = await auth.Verifier.newVerifier(
-        {
-            stateResolver: resolvers,
-            circuitsDir: path.join(__dirname, "..", "..", "..", "..", "keys"),
-            ipfsGatewayURL: "https://ipfs.io"
-        }
+    // Locate the directory that contains circuit's verification keys
+    const verificationKeyloader = new loaders.FSKeyLoader(
+        path.join(process.cwd(), "keys") // See the "keys" folder in the root directory
     );
 
-    let authResponse;
+    // Values for the verifier
+    const sLoader = new loaders.UniversalSchemaLoader("ipfs.io");
+
+    // Initialize the verifier with the values described above.
+    const verifier = new auth.Verifier(verificationKeyloader, sLoader, resolvers);
 
     try {
-        const opts = {
-            AcceptedStateTransitionDelay: 5 * 60 * 1000, // 5 minute
-        };
-        authResponse = await verifier.fullVerify(tokenStr, JSON.parse(session.request!.toString()), opts as any)
-        await db.session.update({ where: { id: parseInt(sessionId) }, data: { response: authResponse as any } })
+        // Kick off verification process.
+        const authResponse = await verifier.fullVerify(
+            tokenStr,
+            JSON.parse(session.request! as any),
+            {
+                acceptedStateTransitionDelay: 5 * 60 * 1000, // up to a 5 minute delay accepted by the Verifier
+            }
+        );
+
+        // Store the authResponse in the DB
+        await db.session.update({ where: { id: session.id }, data: { response: authResponse as any } });
+
+        // Send back to client, but doesn't get read this way. It gets read from the DB poll.
+        return res.status(200).send(authResponse);
     } catch (error) {
+        console.error(error);
         return res.status(500).send(error);
     }
-    return res.status(200).send("user with ID: " + authResponse.from + " Succesfully authenticated");
 }

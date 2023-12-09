@@ -66,8 +66,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const scope = request.body.scope ?? [];
     request.body.scope = [...scope, proofRequest];
 
-    data.request = request;
-    await db.session.update({ where: { id }, data: { request } });
+    data.request = request as any;
+    await db.session.update({ where: { id }, data: { request: request as any } });
 
     return res.status(200).send(request);
 }
