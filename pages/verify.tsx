@@ -2,11 +2,13 @@ import Navbar from "@/components/Navbar";
 import Head from "next/head";
 import QRCode from "react-qr-code";
 import { useState, useEffect } from "react"
+import path from "path";
 
 export default function Home() {
     const [qr, setQR] = useState("")
 
     useEffect(() => {
+
         fetch("/api/sign-in").then(res => res.json()).then(data => {
             setQR(JSON.stringify(data))
         })
