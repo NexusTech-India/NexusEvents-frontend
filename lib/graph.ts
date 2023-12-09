@@ -59,5 +59,6 @@ export const getEvent = async (id: string) => {
             "query": `{\n  event(id: "${id}") {\n    id\n    organizer\n    name\n    description\n    createdAt\n    evnt\n    endDate\n    logo\n    startDate\n    totalTickets\n  }\n}`
         })
     }).then(res => res.json())
+
     return data.data.event as Event
 }

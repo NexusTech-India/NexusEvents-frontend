@@ -10,14 +10,14 @@ export default function Events() {
     const router = useRouter()
 
     useEffect(() => {
-        getEvent(router.query.id).then((e: any) => {
+        getEvent(router.query.id as string).then((e: any) => {
             setEvent(e)
         })
     }, [router.query.id])
 
     useEffect(() => {
         if (event) {
-            getTickets(event.evnt).then((t: any) => {
+            getTickets().then((t: any) => {
                 setTickets(t)
                 console.log(t)
             })
@@ -37,10 +37,16 @@ export default function Events() {
                     return (
                         <div className="flex flex-row justify-center items-center">
                             <div className="flex flex-col justify-center items-center">
-                                <h1 className="text-white text-2xl">{ticket.name}</h1>
-                                <h1 className="text-white text-2xl">{ticket.price}</h1>
-                                <h1 className="text-white text-2xl">{ticket.description}</h1>
-                                <h1 className="text-white text-2xl">{ticket.totalSupply}</h1>
+                                <div className="flex flex-row justify-center items-center">
+                                    <img src={event!.logo} className="w-20 h-20 rounded-full" />
+                                    <div className="flex flex-col justify-center items-center">
+                                        <h1 className="text-white text-2xl font-bold">{event!.name}</h1>
+                                        <h1 className="text-white text-2xl font-bold">{ticket.price}</h1>
+                                    </div>
+                                </div>
+                                <div className="flex flex-row justify-center items-center">
+                                    <button className="bg-[#2e026d] text-white rounded-lg px-4 py-2 mt-4">Buy</button>
+                                </div>
                             </div>
                         </div>
                     )
