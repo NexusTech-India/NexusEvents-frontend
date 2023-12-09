@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             context: 'ipfs://QmZJo92wz58RNq9kWS8vwXMxNiVs4TgwjVbHv87FYXS6oQ',
             credentialSubject: {
                 birthday: {
-                    $lt: 20100101,
+                    $lt: 20000101,
                 },
             },
         },
