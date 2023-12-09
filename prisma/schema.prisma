@@ -9,3 +9,10 @@ datasource db {
     provider = "mongodb"
     url      = env("DATABASE_URL")
 }
+
+model Session {
+    id        String   @id @default(cuid()) @map("_id")
+    request   Json     @default("{}")
+    response  Json     @default("{}")
+    createdAt DateTime @default(now())
+}
