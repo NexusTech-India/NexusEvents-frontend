@@ -13,7 +13,7 @@ export const config = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     let { sessionId } = req.query;
     sessionId = sessionId as string;
-    const session = await db.session.findUnique({ where: { id: sessionId } });
+    const session = await db.session.findUnique({ where: { id: parseInt(sessionId) } });
     if (!session) return res.status(404).send("Session not found");
 
     // get JWZ token params from the post request
@@ -48,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             AcceptedStateTransitionDelay: 5 * 60 * 1000, // 5 minute
         };
         authResponse = await verifier.fullVerify(tokenStr, JSON.parse(session.request!.toString()), opts as any)
-        await db.session.update({ where: { id: sessionId }, data: { response: authResponse as any } })
+        await db.session.update({ where: { id: parseInt(sessionId) }, data: { response: authResponse as any } })
     } catch (error) {
         return res.status(500).send(error);
     }
