@@ -22,9 +22,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(__dirname+"../..", fs.readdirSync(path.join(__dirname, "..", "..")))
     console.log(__dirname+"../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..")))
     console.log(__dirname+"../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..")))
-    console.log(__dirname+"../../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..", "..")))
-    console.log(__dirname+"../../../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..", "..", "..")))
-    console.log(__dirname+"../../../../../../..", fs.readdirSync(path.join(__dirname, "..", "..", "..", "..", "..", "..", "..")))
 
     const session = await db.session.findUnique({ where: { id: parseInt(sessionId) } });
     if (!session) return res.status(404).send("Session not found");
