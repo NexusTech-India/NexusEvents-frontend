@@ -13,6 +13,7 @@ export const config = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     let { sessionId } = req.query;
     sessionId = sessionId as string;//.next/server/pages/api/callback.js -> path.join(__dirname, "..", "keys")
+    console.log(__dirname);
     console.log(path.join(__dirname, "..", "..", "..", "keys"))
     const session = await db.session.findUnique({ where: { id: parseInt(sessionId) } });
     if (!session) return res.status(404).send("Session not found");
