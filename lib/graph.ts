@@ -53,6 +53,7 @@ export const getTickets = async () => {
 }
 
 export const getEvent = async (id: string) => {
+    if(!id || id === "") return null
     let data = await fetch("https://api.studio.thegraph.com/query/60903/nexus-events/v2.0.0", {
         method: "POST",
         body: JSON.stringify({

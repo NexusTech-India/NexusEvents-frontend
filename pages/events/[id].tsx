@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Event, Ticket, getEvent, getTickets } from "@/lib/graph";
+import { Card, CardBody, CardFooter, Stack, Heading, Divider, ButtonGroup, Image, Text, Button } from '@chakra-ui/react'
 
 export default function Events() {
     const [event, setEvent] = useState<Event>()
@@ -33,22 +34,33 @@ export default function Events() {
             <main className="flex h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] overflow-hidden overflow-y-scroll">
                 <Navbar />
 
-                {tickets.map(ticket => {
+                {event && tickets.map(ticket => {
                     return (
-                        <div className="flex flex-row justify-center items-center">
-                            <div className="flex flex-col justify-center items-center">
-                                <div className="flex flex-row justify-center items-center">
-                                    <img src={event!.logo} className="w-20 h-20 rounded-full" />
-                                    <div className="flex flex-col justify-center items-center">
-                                        <h1 className="text-white text-2xl font-bold">{event!.name}</h1>
-                                        <h1 className="text-white text-2xl font-bold">{ticket.price}</h1>
+                        <Card key={ticket.id}>
+                            <CardBody>
+                                <Stack mt='6' spacing='3'>
+                                    <Heading size='md'>{event.name}</Heading>
+                                    <Text>{event.description}</Text>
+                                    <Divider />
+                                    <div className="flex flex-row justify-between">
+                                        <Text>
+                                            Price:
+                                        </Text>
+                                        <Text>
+                                            {ticket.price}
+                                        </Text>
                                     </div>
-                                </div>
-                                <div className="flex flex-row justify-center items-center">
-                                    <button className="bg-[#2e026d] text-white rounded-lg px-4 py-2 mt-4">Buy</button>
-                                </div>
-                            </div>
-                        </div>
+                                </Stack>
+                            </CardBody>
+                            <Divider />
+                            <CardFooter>
+                                <ButtonGroup spacing='2'>
+                                    <Button variant='solid' colorScheme='blue'>
+                                        Buy Ticket
+                                    </Button>
+                                </ButtonGroup>
+                            </CardFooter>
+                        </Card>
                     )
                 })}
             </main>

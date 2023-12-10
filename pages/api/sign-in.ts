@@ -43,11 +43,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const data = await db.session.create({ data: { id: count + 1 } })
     const { id } = data;
 
-    const hostUrl = "https://nexus-events.vercel.app";
+    const hostUrl = "https://051d-157-45-80-193.ngrok-free.app";
     const callbackURL = "/api/callback"
     const audience = "did:polygonid:polygon:mumbai:2qKMLW2WxXWmTMLiAEuWmBcbzdVYyTWAL6MtceJJvF"
 
-    const uri = `${hostUrl}${callbackURL}?sessionId=${id}`;
+    const uri = `${hostUrl}${callbackURL}?sessionId=${id}&authRequest=${Buffer.from(JSON.stringify(data.request)).toString('base64')}`;
 
     // Generate request for basic authentication
     const request = auth.createAuthorizationRequest(
